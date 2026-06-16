@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ecomma — Rwanda's marketplace for home & living. Furniture, kitchen, bedroom, decor and more.">
+  <title>Ecomma — Home & Living Marketplace | Rwanda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="container top-bar__inner">
+      <span>🇷🇼 Delivering across Rwanda</span>
+      <div class="top-bar__links" id="topBarAuth">
+        <a href="#seller">Sell on Ecomma</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">
+        <span class="logo__icon">E</span>
+        <span class="logo__text">Ecomma</span>
+      </a>
+
+      <form class="search-bar" id="searchForm" role="search">
+        <input type="search" id="searchInput" placeholder="Search products, categories..." aria-label="Search products">
+        <button type="submit" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
+
+      <nav class="nav" id="mainNav" aria-label="Main navigation">
+        <a href="#categories">Categories</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contact">Contact</a>
+        <a href="#seller">Sell</a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="icon-btn" id="wishlistBtn" aria-label="Wishlist" title="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge" id="wishlistCount">0</span>
+        </button>
+        <button class="icon-btn" id="cartBtn" aria-label="Shopping cart" title="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="badge" id="cartCount">0</span>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav drawer -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <a href="#categories">Categories</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#contact">Contact</a>
+      <a href="#seller">Sell on Ecomma</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <span class="hero__badge">Rwanda's home & living marketplace</span>
+          <h1>Everything for your home, <em>delivered across Rwanda</em></h1>
+          <p>Discover furniture, kitchen essentials, bedroom decor and more from trusted local sellers. Browse, order, and track delivery — all in one place.</p>
+          <div class="hero__cta">
+            <a href="#categories" class="btn btn--primary">Browse Categories</a>
+            <a href="#how-it-works" class="btn btn--outline">How It Works</a>
+          </div>
+          <div class="hero__stats">
+            <div><strong>10</strong><span>Home categories</span></div>
+            <div><strong>276+</strong><span>Product types</span></div>
+            <div><strong>🇷🇼</strong><span>Local sellers</span></div>
+          </div>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__card hero__card--1">🛋️ Living Room</div>
+          <div class="hero__card hero__card--2">🍳 Kitchen</div>
+          <div class="hero__card hero__card--3">🛏️ Bedroom</div>
+          <div class="hero__card hero__card--4">🐶 Pet & Baby</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section categories" id="categories">
+      <div class="container">
+        <div class="section__header">
+          <h2>Shop by Room</h2>
+          <p>Browse categories and discover products from trusted local sellers</p>
+        </div>
+
+        <div class="category-filters" id="categoryFilters" role="tablist">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="search-results" id="searchResults" hidden>
+          <h3>Search Results</h3>
+          <div id="searchResultsList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section__header">
+          <h2>How Ecomma Works</h2>
+          <p>From browsing to delivery — here's how shopping on our platform works</p>
+        </div>
+
+        <div class="how-tabs" role="tablist">
+          <button class="how-tab active" data-how-tab="shop" role="tab" aria-selected="true">For Shoppers</button>
+          <button class="how-tab" data-how-tab="sell" role="tab">For Sellers</button>
+        </div>
+
+        <div class="how-panel active" id="how-panel-shop" role="tabpanel">
+          <ol class="steps">
+            <li class="step">
+              <span class="step__num">1</span>
+              <div>
+                <h4>Browse & search</h4>
+                <p>Explore rooms — living room, kitchen, bedroom, and more — or search for exactly what you need.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">2</span>
+              <div>
+                <h4>Add to cart or wishlist</h4>
+                <p>Save favorites for later or add items from multiple sellers into one cart.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">3</span>
+              <div>
+                <h4>Checkout & pay</h4>
+                <p>Pay securely with MTN MoMo, Airtel Money, bank card, or cash on delivery.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">4</span>
+              <div>
+                <h4>Track & receive</h4>
+                <p>Follow your order from checkout to your doorstep across Kigali and beyond.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="how-panel" id="how-panel-sell" role="tabpanel" hidden>
+          <ol class="steps">
+            <li class="step">
+              <span class="step__num">1</span>
+              <div>
+                <h4>Register your shop</h4>
+                <p>Create a seller account and submit your business details for verification.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">2</span>
+              <div>
+                <h4>List your products</h4>
+                <p>Add photos, prices, and descriptions. Update stock as inventory changes.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">3</span>
+              <div>
+                <h4>Receive & fulfill orders</h4>
+                <p>Get notified when customers order. Prepare items and update order status.</p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num">4</span>
+              <div>
+                <h4>Grow your reach</h4>
+                <p>Reach customers across Rwanda through our marketplace and delivery network.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="platform-highlights">
+          <h3>What you can do on Ecomma</h3>
+          <div class="feature-grid">
+            <div class="feature-item"><span>🔍</span><h4>Product search</h4><p>Find items across all categories instantly.</p></div>
+            <div class="feature-item"><span>📂</span><h4>Room categories</h4><p>Shop by living room, kitchen, bedroom, and more.</p></div>
+            <div class="feature-item"><span>🛒</span><h4>Shopping cart</h4><p>Combine products from different sellers in one order.</p></div>
+            <div class="feature-item"><span>❤️</span><h4>Wishlist</h4><p>Save products you love for later.</p></div>
+            <div class="feature-item"><span>⭐</span><h4>Reviews & ratings</h4><p>See what other buyers think before you buy.</p></div>
+            <div class="feature-item"><span>📦</span><h4>Order tracking</h4><p>Know where your order is at every step.</p></div>
+            <div class="feature-item"><span>👤</span><h4>Account & login</h4><p>Register to manage orders and saved items.</p></div>
+            <div class="feature-item"><span>📱</span><h4>Works on mobile</h4><p>Shop on phone, tablet, or desktop.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section__header">
+          <h2>Contact Us</h2>
+          <p>Questions, partnerships, or order support — we're here to help</p>
+        </div>
+
+        <div class="contact-grid">
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-group">
+              <label for="contactName">Name</label>
+              <input type="text" id="contactName" name="name" required placeholder="Your full name" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="contactEmail">Email</label>
+              <input type="email" id="contactEmail" name="email" required placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="contactReason">Reason for contact</label>
+              <select id="contactReason" name="reason" required>
+                <option value="" disabled selected>Select a reason</option>
+                <option value="partnership">Partnership proposal</option>
+                <option value="refunds">Refunds</option>
+                <option value="delayed-delivery">Delayed delivery</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" name="message" rows="5" required placeholder="How can we help you?"></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--block">Send Message</button>
+          </form>
+
+          <aside class="contact-aside">
+            <div class="contact-aside__card">
+              <h3>Get in touch</h3>
+              <p>We typically respond within 1–2 business days. For urgent order issues, mention your order number in your message.</p>
+              <ul class="contact-aside__list">
+                <li><strong>Partnership proposal</strong> — Collaborate with Ecomma as a seller or partner</li>
+                <li><strong>Refunds</strong> — Request a refund or return assistance</li>
+                <li><strong>Delayed delivery</strong> — Report or track a late order</li>
+                <li><strong>Others</strong> — General questions and feedback</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seller CTA -->
+    <section class="section seller-cta" id="seller">
+      <div class="container seller-cta__inner">
+        <div>
+          <h2>Start selling on Ecomma</h2>
+          <p>Join furniture shops, kitchen suppliers, and decor businesses already reaching customers across Rwanda.</p>
+        </div>
+        <a href="register.html" class="btn btn--primary btn--lg">Register as Seller</a>
+      </div>
+
+      <div class="container location-map">
+        <div class="location-map__header">
+          <div>
+            <h3>Our location</h3>
+            <p class="location-map__address" id="businessAddress"></p>
+          </div>
+          <a href="#" id="getDirectionsBtn" class="btn btn--outline btn--directions" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Get Directions
+          </a>
+        </div>
+        <div class="location-map__embed">
+          <iframe
+            id="businessMap"
+            title="Ecomma business location on Google Maps"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#" class="logo">
+          <span class="logo__icon">E</span>
+          <span class="logo__text">Ecomma</span>
+        </a>
+        <p>Rwanda's home & living marketplace. Connecting buyers with local sellers.</p>
+      </div>
+      <div class="footer__links">
+        <div>
+          <h4>Shop</h4>
+          <a href="#categories">Categories</a>
+          <a href="#how-it-works">How It Works</a>
+        </div>
+        <div>
+          <h4>Sell</h4>
+          <a href="#seller">Become a Seller</a>
+          <a href="#how-it-works">Selling Guide</a>
+        </div>
+        <div>
+          <h4>Account</h4>
+          <a href="login.html">Login</a>
+          <a href="register.html">Register</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="#contact">Contact Us</a>
+          <a href="#seller">Our Location</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>&copy; 2026 Ecomma. Built for Rwanda.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div class="modal" id="cartModal" aria-hidden="true" role="dialog" aria-labelledby="cartTitle">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3 id="cartTitle">Shopping Cart</h3>
+        <button class="modal__close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body" id="cartBody">
+        <p class="empty-state">Your cart is empty.</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--primary btn--block" id="checkoutBtn" disabled>Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div class="modal" id="wishlistModal" aria-hidden="true" role="dialog" aria-labelledby="wishlistTitle">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3 id="wishlistTitle">Wishlist</h3>
+        <button class="modal__close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body" id="wishlistBody">
+        <p class="empty-state">Your wishlist is empty.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal" id="authModal" aria-hidden="true" role="dialog" aria-labelledby="authTitle">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content modal__content--sm">
+      <div class="modal__header">
+        <h3 id="authTitle">Login</h3>
+        <button class="modal__close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body">
+        <form id="authForm">
+          <div class="form-group" id="authNameField" hidden>
+            <label for="authName">Full name</label>
+            <input type="text" id="authName" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label for="authEmail">Email</label>
+            <input type="email" id="authEmail" required placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label for="authPassword">Password</label>
+            <input type="password" id="authPassword" required placeholder="••••••••">
+          </div>
+          <div class="role-selector" id="authRoleSelector">
+            <span class="role-selector__label">Account type</span>
+            <div class="role-selector__options role-selector__options--compact">
+              <label class="role-option">
+                <input type="radio" name="authRole" value="user" checked>
+                <span class="role-option__box">
+                  <span class="role-option__icon">🛍️</span>
+                  <span class="role-option__text"><strong>Shopper</strong></span>
+                </span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="authRole" value="seller">
+                <span class="role-option__box">
+                  <span class="role-option__icon">🏪</span>
+                  <span class="role-option__text"><strong>Seller</strong></span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="sellerField" hidden>
+            <label for="shopName">Shop Name</label>
+            <input type="text" id="shopName" placeholder="Your business name">
+          </div>
+          <button type="submit" class="btn btn--primary btn--block" id="authSubmit">Login</button>
+        </form>
+        <p class="auth-switch" id="authSwitch">Don't have an account? <a href="register.html">Register</a></p>
+        <p class="auth-switch"><a href="login.html">Full login page →</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/site-config.js"></script>
+  <script src="js/api-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/images.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/products-store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

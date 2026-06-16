@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Ecomma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <div class="auth-page__bg"></div>
+
+  <main class="auth-page__main">
+    <a href="index.html" class="logo auth-page__logo">
+      <span class="logo__icon">E</span>
+      <span class="logo__text">Ecomma</span>
+    </a>
+
+    <div class="auth-card auth-card--wide">
+      <div class="auth-card__header">
+        <h1>Create your account</h1>
+        <p>Join Ecomma as a shopper or seller</p>
+      </div>
+
+      <form id="registerForm" class="auth-card__form">
+        <div class="form-group">
+          <label for="regName">Full name</label>
+          <input type="text" id="regName" required placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" required placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" required placeholder="At least 6 characters" autocomplete="new-password" minlength="6">
+        </div>
+
+        <div class="role-selector">
+          <span class="role-selector__label">Register as</span>
+          <div class="role-selector__options">
+            <label class="role-option">
+              <input type="radio" name="regRole" value="user" checked>
+              <span class="role-option__box">
+                <span class="role-option__icon">🛍️</span>
+                <span class="role-option__text">
+                  <strong>Shopper</strong>
+                  <small>Browse, wishlist & order</small>
+                </span>
+              </span>
+            </label>
+            <label class="role-option">
+              <input type="radio" name="regRole" value="seller">
+              <span class="role-option__box">
+                <span class="role-option__icon">🏪</span>
+                <span class="role-option__text">
+                  <strong>Seller</strong>
+                  <small>List & sell products</small>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="shopNameField" hidden>
+          <label for="regShopName">Shop name</label>
+          <input type="text" id="regShopName" placeholder="Your business name">
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block">Create Account</button>
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="login.html">Login</a>
+      </p>
+      <p class="auth-switch">
+        <a href="index.html">← Back to marketplace</a>
+      </p>
+    </div>
+
+    <p class="auth-page__footer">© 2026 Ecomma. Built for Rwanda.</p>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/api-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const $ = (sel) => document.querySelector(sel);
+
+      function showToast(message) {
+        const toast = $('#toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+      }
+
+      const session = Auth.getSession();
+      if (session) {
+        window.location.href = Auth.redirectForRole(session.role);
+        return;
+      }
+
+      document.querySelectorAll('input[name="regRole"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          const isSeller = document.querySelector('input[name="regRole"]:checked').value === 'seller';
+          $('#shopNameField').hidden = !isSeller;
+          $('#regShopName').required = isSeller;
+        });
+      });
+
+      $('#registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const role = document.querySelector('input[name="regRole"]:checked').value;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+
+        const result = await Auth.register({
+          name: $('#regName').value,
+          email: $('#regEmail').value,
+          password: $('#regPassword').value,
+          role,
+          shopName: $('#regShopName').value
+        });
+
+        submitBtn.disabled = false;
+
+        if (!result.ok) {
+          showToast(result.error);
+          return;
+        }
+
+        showToast('Account created! Welcome to Ecomma.');
+        setTimeout(() => {
+          window.location.href = Auth.redirectForRole(result.user.role);
+        }, 600);
+      });
+    })();
+  </script>
+</body>
+</html>
