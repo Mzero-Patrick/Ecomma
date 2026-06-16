@@ -101,6 +101,67 @@
           p.hidden = !p.id.endsWith(panel);
           p.classList.toggle('active', p.id.endsWith(panel));
         });
+        if (panel === 'orders') renderOrders();
+      });
+    });
+  }
+
+  async function renderOrders() {
+    const result = await OrderStore.list(session);
+    const tbody = $('#ordersTableBody');
+    const empty = $('#emptyOrders');
+
+    if (!result.ok) {
+      showToast(result.error);
+      return;
+    }
+
+    $('#statOrders').textContent = result.orders.length;
+
+    if (!result.orders.length) {
+      tbody.innerHTML = '';
+      empty.hidden = false;
+      return;
+    }
+
+    empty.hidden = true;
+    tbody.innerHTML = result.orders.map((order) => `
+      <tr>
+        <td>
+          <strong>${order.id}</strong><br>
+          <small>${new Date(order.createdAt).toLocaleDateString('en-RW')}</small>
+        </td>
+        <td>${order.customerName}<br><small>${order.deliveryDistrict}</small></td>
+        <td>${order.paymentMethodLabel}</td>
+        <td>${formatPrice(order.totalAmount)}</td>
+        <td><span class="status-badge status-badge--pending">${order.statusLabel}</span></td>
+        <td>
+          <select class="order-status-select" data-order="${order.id}">
+            <option value="">Update…</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.order-status-select').forEach((select) => {
+      select.addEventListener('change', async () => {
+        const status = select.value;
+        if (!status) return;
+        const orderId = select.dataset.order;
+        select.disabled = true;
+        const res = await OrderStore.updateStatus(orderId, status, session);
+        select.disabled = false;
+        select.value = '';
+        if (!res.ok) {
+          showToast(res.error);
+          return;
+        }
+        showToast(`Order ${orderId} → ${status}`);
+        renderOrders();
       });
     });
   }
@@ -141,6 +202,7 @@
     populateCategories();
     renderUserInfo();
     renderProducts();
+    await renderOrders();
     setupNav();
   }
 

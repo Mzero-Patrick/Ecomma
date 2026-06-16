@@ -7,6 +7,7 @@ const { initDatabase } = require('./init-db');
 const { runSeed } = require('./seed');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
+const orderRoutes = require('./routes/orders');
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'ecomma-api' });

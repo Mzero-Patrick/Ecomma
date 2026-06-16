@@ -71,10 +71,25 @@ Use the hidden admin entrance on the login page (5× click logo or double-click 
 | GET    | `/api/products/seller/:id`  | Seller's products  |
 | POST   | `/api/products`             | Add product        |
 | DELETE | `/api/products/:id`         | Remove (admin)     |
+| POST   | `/api/orders`               | Create order + initiate payment |
+| POST   | `/api/orders/:id/confirm-payment` | Confirm MoMo / Airtel payment (demo) |
+| GET    | `/api/orders`               | List orders (user or admin) |
+| GET    | `/api/orders/:id`           | Order detail       |
+| PATCH  | `/api/orders/:id/status`    | Update status (admin) |
 
 ## Database tables
 
 - **users** — email, hashed password, role (`user` / `seller` / `admin`), shop name
 - **products** — name, category, price, seller, soft-delete flag
+- **orders** — customer, delivery, payment method, status, total
+- **order_items** — line items linked to each order
 
-View or edit data anytime in phpMyAdmin under the `ecomma` database.
+## Payments (MTN MoMo / Airtel Money)
+
+Local demo mode is enabled by default (`PAYMENT_DEMO_MODE=true` in `server/.env`):
+
+1. Shopper selects MTN MoMo or Airtel Money at checkout
+2. Server creates order with status `payment_processing`
+3. Shopper clicks **Confirm Payment** to simulate phone approval
+
+For production, configure MTN MoMo API keys in `server/.env` (see `.env.example`).

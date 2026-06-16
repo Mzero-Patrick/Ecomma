@@ -21,6 +21,8 @@ The goal is to be Rwanda’s **one-stop online shopping focal point** for life e
 | Area | Details |
 |------|---------|
 | **Marketplace** | Hero, 10 category filters, 276+ products, search, cart, wishlist |
+| **Checkout** | MTN MoMo, Airtel Money, Cash on Delivery — orders saved in MySQL |
+| **Order history** | Shoppers track status; admins update confirmed → shipped → delivered |
 | **Auth** | Register / login with roles: **Shopper**, **Seller**, **Admin** |
 | **Seller dashboard** | Add and manage your own product listings |
 | **Admin dashboard** | View all products, publish listings, remove items |
@@ -32,7 +34,7 @@ The goal is to be Rwanda’s **one-stop online shopping focal point** for life e
 
 | Role | Access |
 |------|--------|
-| **Shopper** | Browse, search, cart, wishlist, checkout (UI placeholder) |
+| **Shopper** | Browse, search, cart, wishlist, checkout, order history |
 | **Seller** | Everything shoppers have + seller dashboard to list products |
 | **Admin** | Full catalog control + hidden admin login entrance |
 
@@ -210,7 +212,7 @@ Below are practical add-ons ordered from **high impact / easier** to **more adva
 
 ### Suggested next 3 steps (best ROI)
 
-1. **Product detail page + real checkout flow** — turns the demo into a real shop experience.
+1. ~~**Product detail page + real checkout flow**~~ — ✅ Checkout + orders with MTN MoMo / Airtel Money / COD
 2. **Seller image upload (Cloudinary or local `/uploads`)** — fixes generic photos and looks professional.
 3. **JWT auth + deploy to Render/Railway** — public live link for your [GitHub repo](https://github.com/Mzero-Patrick/Ecomma).
 

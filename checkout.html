@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Ecomma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page checkout-page">
+  <div class="auth-page__bg"></div>
+
+  <main class="auth-page__main checkout-page__main">
+    <a href="index.html" class="logo auth-page__logo">
+      <span class="logo__icon">E</span>
+      <span class="logo__text">Ecomma</span>
+    </a>
+
+    <div class="auth-card auth-card--wide checkout-card">
+      <div class="auth-card__header">
+        <h1>Checkout</h1>
+        <p>Pay with MTN MoMo, Airtel Money, or Cash on Delivery</p>
+      </div>
+
+      <div id="checkoutEmpty" class="empty-state" hidden>
+        <p>Your cart is empty.</p>
+        <a href="index.html" class="btn btn--primary">Continue shopping</a>
+      </div>
+
+      <form id="checkoutForm" class="checkout-form">
+        <section class="checkout-section">
+          <h2>Order summary</h2>
+          <div id="checkoutItems" class="checkout-items"></div>
+          <div class="checkout-total">
+            <span>Total</span>
+            <strong id="checkoutTotal">RF 0</strong>
+          </div>
+        </section>
+
+        <section class="checkout-section">
+          <h2>Delivery details</h2>
+          <div class="form-group">
+            <label for="customerName">Full name</label>
+            <input type="text" id="customerName" required placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Phone number</label>
+            <input type="tel" id="customerPhone" required placeholder="078XXXXXXX">
+          </div>
+          <div class="form-group">
+            <label for="deliveryDistrict">District / City</label>
+            <select id="deliveryDistrict" required>
+              <option value="">Select district</option>
+              <option value="Kigali — Gasabo">Kigali — Gasabo</option>
+              <option value="Kigali — Kicukiro">Kigali — Kicukiro</option>
+              <option value="Kigali — Nyarugenge">Kigali — Nyarugenge</option>
+              <option value="Eastern Province">Eastern Province</option>
+              <option value="Northern Province">Northern Province</option>
+              <option value="Southern Province">Southern Province</option>
+              <option value="Western Province">Western Province</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deliveryAddress">Street address & landmarks</label>
+            <textarea id="deliveryAddress" rows="3" required placeholder="House number, sector, nearby landmark"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="orderNotes">Delivery notes (optional)</label>
+            <input type="text" id="orderNotes" placeholder="Gate code, best time to deliver…">
+          </div>
+        </section>
+
+        <section class="checkout-section">
+          <h2>Payment method</h2>
+          <div class="payment-methods">
+            <label class="payment-method">
+              <input type="radio" name="paymentMethod" value="mtn_momo" checked>
+              <span class="payment-method__box">
+                <span class="payment-method__icon payment-method__icon--mtn">
+                  <img src="images/mtn.png" alt="MTN MoMo" width="40" height="40">
+                </span>
+                <span class="payment-method__text">
+                  <strong>MTN MoMo</strong>
+                  <small>Pay from your MTN mobile money wallet</small>
+                </span>
+              </span>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="paymentMethod" value="airtel_money">
+              <span class="payment-method__box">
+                <span class="payment-method__icon payment-method__icon--airtel">
+                  <img src="images/airtel.png" alt="Airtel Money" width="40" height="40">
+                </span>
+                <span class="payment-method__text">
+                  <strong>Airtel Money</strong>
+                  <small>Pay from your Airtel mobile money wallet</small>
+                </span>
+              </span>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="paymentMethod" value="cod">
+              <span class="payment-method__box">
+                <span class="payment-method__icon">💵</span>
+                <span class="payment-method__text">
+                  <strong>Cash on Delivery</strong>
+                  <small>Pay when your order arrives</small>
+                </span>
+              </span>
+            </label>
+          </div>
+          <div class="form-group" id="paymentPhoneField">
+            <label for="paymentPhone">Mobile money number</label>
+            <input type="tel" id="paymentPhone" placeholder="078XXXXXXX (MTN) or 073XXXXXXX (Airtel)">
+            <small class="form-hint">Must match the wallet you will pay from</small>
+          </div>
+        </section>
+
+        <button type="submit" class="btn btn--primary btn--block" id="placeOrderBtn">Place Order</button>
+      </form>
+
+      <div id="paymentStep" class="checkout-payment-step" hidden>
+        <div class="payment-status-card">
+          <img class="payment-status-card__logo" id="paymentIcon" src="images/mtn.png" alt="Payment provider" width="72" height="72">
+          <h2 id="paymentTitle">Complete payment on your phone</h2>
+          <p id="paymentInstructions"></p>
+          <p class="payment-ref">Reference: <strong id="paymentReference">—</strong></p>
+          <p class="form-hint" id="paymentUssd" hidden></p>
+        </div>
+        <button type="button" class="btn btn--primary btn--block" id="confirmPaymentBtn">Confirm Payment</button>
+        <a href="orders.html" class="btn btn--outline btn--block">View my orders</a>
+      </div>
+
+      <div id="orderSuccess" class="checkout-success" hidden>
+        <div class="checkout-success__icon">✓</div>
+        <h2>Order placed!</h2>
+        <p id="successMessage">Your order has been confirmed.</p>
+        <p class="payment-ref">Order ID: <strong id="successOrderId">—</strong></p>
+        <a href="orders.html" class="btn btn--primary btn--block">View order history</a>
+        <a href="index.html" class="btn btn--outline btn--block">Continue shopping</a>
+      </div>
+
+      <p class="auth-switch">
+        <a href="index.html">← Back to marketplace</a>
+      </p>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/api-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

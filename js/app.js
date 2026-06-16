@@ -58,6 +58,7 @@
 
       topBar.innerHTML = `
         <span class="top-bar__user">Hi, ${session.name}</span>
+        <a href="orders.html">My Orders</a>
         ${dashLink ? `<a href="${dashLink}">Dashboard</a>` : ''}
         <a href="#" id="logoutLink">Sign Out</a>
       `;
@@ -386,8 +387,15 @@
     });
 
     $('#checkoutBtn').addEventListener('click', () => {
-      closeModal($('#cartModal'));
-      showToast('Checkout coming soon — MTN MoMo, Airtel Money & COD supported.');
+      if (cart.length === 0) return;
+      const session = Auth.getSession();
+      if (!session) {
+        closeModal($('#cartModal'));
+        showToast('Please sign in to checkout.');
+        setTimeout(() => { window.location.href = 'login.html?redirect=checkout.html'; }, 600);
+        return;
+      }
+      window.location.href = 'checkout.html';
     });
   }
 

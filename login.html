@@ -168,7 +168,8 @@
 
         showToast(`Welcome back, ${result.user.name}!`);
         setTimeout(() => {
-          window.location.href = Auth.redirectForRole(result.user.role);
+          const redirect = new URLSearchParams(window.location.search).get('redirect');
+          window.location.href = redirect || Auth.redirectForRole(result.user.role);
         }, 600);
       });
     })();
