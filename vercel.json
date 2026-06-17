@@ -3,14 +3,25 @@
   "rewrites": [
     { "source": "/api/ping", "destination": "/api/ping.js" },
     { "source": "/api/db-test", "destination": "/api/db-test.js" },
+    { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/auth/login", "destination": "/api/auth/login.js" },
     { "source": "/api/(.*)", "destination": "/api/index.js" }
   ],
   "functions": {
     "api/index.js": {
       "maxDuration": 30
     },
+    "api/auth/login.js": {
+      "maxDuration": 30
+    },
+    "api/health.js": {
+      "maxDuration": 15
+    },
     "api/ping.js": {
       "maxDuration": 10
+    },
+    "api/db-test.js": {
+      "maxDuration": 15
     }
   }
 }
