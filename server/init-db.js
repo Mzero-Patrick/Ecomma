@@ -1,8 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const { getPoolConfig, isCloudDatabase } = require('./db');
 
 async function initDatabase() {
+  const cloud = isCloudDatabase();
+  const schemaFile = cloud ? 'tables.sql' : 'schema.sql';
+  const schemaPath = path.join(__dirname, '..', 'database', schemaFile);
+  const schema = fs.readFileSync(schemaPath, 'utf8');
+
+  if (cloud) {
+    const { pool } = require('./db');
+    await pool.query(schema);
+    console.log('Cloud database tables ready.');
+    return;
+  }
+
   const config = {
     host: process.env.DB_HOST || '127.0.0.1',
     port: Number(process.env.DB_PORT) || 3306,
@@ -13,13 +26,8 @@ async function initDatabase() {
 
   const dbName = process.env.DB_NAME || 'ecomma';
   const connection = await mysql.createConnection(config);
-
-  const schemaPath = path.join(__dirname, '..', 'database', 'schema.sql');
-  const schema = fs.readFileSync(schemaPath, 'utf8');
-
   await connection.query(schema);
   await connection.end();
-
   console.log(`Database "${dbName}" is ready.`);
 }
 

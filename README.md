@@ -140,9 +140,16 @@ If you already have the repo linked locally:
 ```powershell
 cd c:\Users\user\Desktop\html\Ecomma
 git add .
-git commit -m "Describe your change"
+git commit -m "Add Vercel serverless API and cloud MySQL support"
 git push origin main
 ```
+
+Vercel will redeploy automatically. See **[DEPLOY.md](DEPLOY.md)** for required MySQL environment variables.
+
+**Production checklist:**
+1. Create cloud MySQL (Railway, Aiven, etc.)
+2. Add `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `DB_SSL=true` in Vercel → Settings → Environment Variables
+3. Redeploy and test `https://your-site.vercel.app/api/health`
 
 **First-time setup** (if remote is not added yet):
 
