@@ -2,12 +2,15 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
-const { pool, isCloudDatabase } = require('./db');
+const { getPool, isCloudDatabase } = require('./db');
 const { initDatabase } = require('./init-db');
-const { ensureAdminUser, ensureSampleProducts } = require('./seed');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+
+function poolQuery(...args) {
+  return getPool().query(...args);
+}
 
 const STARTUP_TIMEOUT_MS = Number(process.env.STARTUP_TIMEOUT_MS) || 15000;
 
@@ -26,8 +29,9 @@ function withTimeout(promise, label) {
 async function ensureCore() {
   if (!coreReadyPromise) {
     coreReadyPromise = withTimeout((async () => {
+      const { ensureAdminUser } = require('./seed');
       await initDatabase();
-      await pool.query('SELECT 1');
+      await poolQuery('SELECT 1');
       await ensureAdminUser();
     })(), 'Database startup');
   }
@@ -37,6 +41,7 @@ async function ensureCore() {
 async function ensureFull() {
   if (!fullReadyPromise) {
     fullReadyPromise = withTimeout((async () => {
+      const { ensureSampleProducts } = require('./seed');
       await ensureCore();
       await ensureSampleProducts();
     })(), 'Catalog seed');
@@ -77,7 +82,7 @@ function createApp() {
           error: 'DATABASE_URL is not configured on Vercel.'
         });
       }
-      await withTimeout(pool.query('SELECT 1'), 'Health check');
+      await withTimeout(poolQuery('SELECT 1'), 'Health check');
       res.json({ ok: true, service: 'ecomma-api', database: 'connected' });
     } catch (err) {
       res.status(503).json({

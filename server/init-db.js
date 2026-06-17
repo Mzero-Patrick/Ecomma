@@ -19,9 +19,9 @@ async function initDatabase() {
   const schema = fs.readFileSync(schemaPath, 'utf8');
 
   if (cloud) {
-    const { pool } = require('./db');
-    if (await cloudTablesExist(pool)) return;
-    await pool.query(schema);
+    const { getPool } = require('./db');
+    if (await cloudTablesExist(getPool())) return;
+    await getPool().query(schema);
     console.log('Cloud database tables ready.');
     return;
   }
