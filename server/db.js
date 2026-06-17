@@ -14,6 +14,14 @@ function getSslConfig() {
   return { rejectUnauthorized: strict };
 }
 
+function shouldUseSsl(host) {
+  if (process.env.DB_SSL === 'false') return false;
+  if (process.env.DB_SSL === 'true') return true;
+  // Railway public TCP proxy does not support MySQL SSL upgrades
+  if (host && host.endsWith('.rlwy.net')) return false;
+  return host !== '127.0.0.1' && host !== 'localhost';
+}
+
 function getPoolConfig() {
   const shared = {
     waitForConnections: true,
@@ -25,19 +33,21 @@ function getPoolConfig() {
 
   if (process.env.DATABASE_URL) {
     const url = new URL(process.env.DATABASE_URL);
+    const host = url.hostname;
+    const useSsl = shouldUseSsl(host);
     return {
       ...shared,
-      host: url.hostname,
+      host,
       port: Number(url.port) || 3306,
       user: decodeURIComponent(url.username),
       password: decodeURIComponent(url.password),
       database: url.pathname.replace(/^\//, ''),
-      ssl: getSslConfig()
+      ssl: useSsl ? getSslConfig() : undefined
     };
   }
 
   const host = process.env.DB_HOST || '127.0.0.1';
-  const useSsl = process.env.DB_SSL === 'true' || isCloudDatabase();
+  const useSsl = shouldUseSsl(host);
 
   return {
     ...shared,
