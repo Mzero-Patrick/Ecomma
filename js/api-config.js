@@ -43,16 +43,22 @@ async function apiRequest(path, options = {}) {
 
   if (!contentType.includes('application/json')) {
     const isOnline = window.location.hostname.includes('vercel.app') || !window.location.hostname.match(/localhost|127\.0\.0\.1/);
+    if (response.status === 401) {
+      return {
+        ok: false,
+        error: 'This deployment link is protected. Use https://ecomma-three.vercel.app instead.'
+      };
+    }
     if (response.status === 504) {
       return {
         ok: false,
-        error: 'Server timed out. Add cloud MySQL env vars in Vercel, redeploy, then try again.'
+        error: 'Server timed out. Try https://ecomma-three.vercel.app or redeploy from the latest GitHub push.'
       };
     }
     return {
       ok: false,
       error: isOnline
-        ? 'API not responding. Add MySQL env vars in Vercel → Settings → Environment Variables, then redeploy.'
+        ? 'API not responding. Use https://ecomma-three.vercel.app or check Vercel deployment logs.'
         : 'Invalid server response. Open http://localhost:3000 and ensure the server is running.'
     };
   }
