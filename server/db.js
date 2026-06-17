@@ -16,7 +16,6 @@ function getSslConfig() {
 
 function shouldUseSsl(host) {
   if (process.env.DB_SSL === 'false') return false;
-  // Railway public TCP proxy does not support MySQL SSL upgrades
   if (host && host.endsWith('.rlwy.net')) return false;
   if (process.env.DB_SSL === 'true') return true;
   return host !== '127.0.0.1' && host !== 'localhost';
@@ -28,7 +27,7 @@ function getPoolConfig() {
     connectionLimit: 5,
     charset: 'utf8mb4',
     multipleStatements: true,
-    connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS) || 10000
+    connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS) || 8000
   };
 
   if (process.env.DATABASE_URL) {
@@ -60,11 +59,26 @@ function getPoolConfig() {
   };
 }
 
-const pool = mysql.createPool(getPoolConfig());
+let pool = null;
+
+function getPool() {
+  if (!pool) {
+    pool = mysql.createPool(getPoolConfig());
+  }
+  return pool;
+}
 
 async function query(sql, params = []) {
-  const [rows] = await pool.execute(sql, params);
+  const [rows] = await getPool().execute(sql, params);
   return rows;
 }
 
-module.exports = { pool, query, getPoolConfig, isCloudDatabase };
+module.exports = {
+  get pool() {
+    return getPool();
+  },
+  query,
+  getPool,
+  getPoolConfig,
+  isCloudDatabase
+};

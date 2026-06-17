@@ -57,6 +57,16 @@ function createApp() {
     next(err);
   });
 
+  app.get('/api/ping', (_req, res) => {
+    res.json({
+      ok: true,
+      service: 'ecomma-api',
+      vercel: Boolean(process.env.VERCEL),
+      hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
+      dbHost: process.env.DB_HOST || (process.env.DATABASE_URL ? 'from-url' : 'unset')
+    });
+  });
+
   app.get('/api/health', async (_req, res) => {
     try {
       if (process.env.VERCEL && !process.env.DATABASE_URL && !isCloudDatabase()) {
