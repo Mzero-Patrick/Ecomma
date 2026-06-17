@@ -4,6 +4,7 @@ const { CATEGORIES, CATALOG_PRODUCT_COUNT } = require('../js/catalog');
 const { getProductImage } = require('../js/images');
 
 const SELLERS = ['Kigali Home Store', 'Rwanda Decor Co.', 'Kitchen Plus RW', 'Furniture Hub'];
+const IS_SERVERLESS = Boolean(process.env.VERCEL);
 
 function generateSampleProducts() {
   const products = [];
@@ -52,18 +53,30 @@ async function ensureAdminUser() {
 
 async function insertSeedProducts() {
   const products = generateSampleProducts();
-  for (const p of products) {
+  const chunkSize = 50;
+
+  for (let i = 0; i < products.length; i += chunkSize) {
+    const chunk = products.slice(i, i + chunkSize);
+    const placeholders = chunk.map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)').join(', ');
+    const values = chunk.flatMap((p) => [
+      p.id, p.name, p.category, p.category_name, p.icon, p.image, p.price,
+      p.rating, p.reviews, p.seller, p.seller_id, p.added_by, p.created_at
+    ]);
+
     await query(
       `INSERT INTO products
         (id, name, category, category_name, icon, image, price, rating, reviews, seller, seller_id, added_by, is_deleted, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)`,
-      [p.id, p.name, p.category, p.category_name, p.icon, p.image, p.price, p.rating, p.reviews, p.seller, p.seller_id, p.added_by, p.created_at]
+       VALUES ${placeholders}`,
+      values
     );
   }
+
   console.log(`Seeded ${products.length} sample products.`);
 }
 
 async function refreshSeedProductImages() {
+  if (IS_SERVERLESS) return;
+
   const products = generateSampleProducts();
   for (const p of products) {
     await query(
@@ -100,4 +113,10 @@ async function runSeed() {
   await ensureSampleProducts();
 }
 
-module.exports = { runSeed, CATEGORIES, CATALOG_PRODUCT_COUNT };
+module.exports = {
+  runSeed,
+  ensureAdminUser,
+  ensureSampleProducts,
+  CATEGORIES,
+  CATALOG_PRODUCT_COUNT
+};

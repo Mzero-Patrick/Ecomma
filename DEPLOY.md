@@ -72,3 +72,5 @@ Required files (already in repo):
 | Invalid server response | Redeploy after adding `vercel.json` + `api/index.js` |
 | Database unavailable | Set `DB_*` or `DATABASE_URL` in Vercel env vars |
 | Login works locally but not online | Cloud DB not configured or wrong credentials |
+| **504 Gateway Timeout** | Set `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `DB_SSL=true` in Vercel env vars and redeploy. First login should respond in seconds after redeploy. |
+| Slow first login | Normal on cold start — retry once. Catalog seed runs only when loading products, not on login. |

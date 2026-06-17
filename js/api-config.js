@@ -43,6 +43,12 @@ async function apiRequest(path, options = {}) {
 
   if (!contentType.includes('application/json')) {
     const isOnline = window.location.hostname.includes('vercel.app') || !window.location.hostname.match(/localhost|127\.0\.0\.1/);
+    if (response.status === 504) {
+      return {
+        ok: false,
+        error: 'Server timed out. Add cloud MySQL env vars in Vercel, redeploy, then try again.'
+      };
+    }
     return {
       ok: false,
       error: isOnline

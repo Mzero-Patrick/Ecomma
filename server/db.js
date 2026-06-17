@@ -15,19 +15,24 @@ function getSslConfig() {
 }
 
 function getPoolConfig() {
+  const shared = {
+    waitForConnections: true,
+    connectionLimit: 5,
+    charset: 'utf8mb4',
+    multipleStatements: true,
+    connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS) || 10000
+  };
+
   if (process.env.DATABASE_URL) {
     const url = new URL(process.env.DATABASE_URL);
     return {
+      ...shared,
       host: url.hostname,
       port: Number(url.port) || 3306,
       user: decodeURIComponent(url.username),
       password: decodeURIComponent(url.password),
       database: url.pathname.replace(/^\//, ''),
-      ssl: getSslConfig(),
-      waitForConnections: true,
-      connectionLimit: 10,
-      charset: 'utf8mb4',
-      multipleStatements: true
+      ssl: getSslConfig()
     };
   }
 
@@ -35,16 +40,13 @@ function getPoolConfig() {
   const useSsl = process.env.DB_SSL === 'true' || isCloudDatabase();
 
   return {
+    ...shared,
     host,
     port: Number(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'ecomma',
-    ssl: useSsl ? getSslConfig() : undefined,
-    waitForConnections: true,
-    connectionLimit: 10,
-    charset: 'utf8mb4',
-    multipleStatements: true
+    ssl: useSsl ? getSslConfig() : undefined
   };
 }
 

@@ -1,5 +1,5 @@
 const path = require('path');
-const { createApp, ensureReady } = require('./app');
+const { createApp, ensureFull } = require('./app');
 
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = path.join(__dirname, '..');
@@ -15,7 +15,7 @@ app.get('*', (req, res, next) => {
   });
 });
 
-ensureReady()
+ensureFull()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Ecomma server running at http://localhost:${PORT}`);
