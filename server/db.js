@@ -30,6 +30,20 @@ function getPoolConfig() {
     connectTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS) || 8000
   };
 
+  const explicitHost = process.env.DB_HOST;
+  if (explicitHost && explicitHost !== '127.0.0.1' && explicitHost !== 'localhost') {
+    const useSsl = shouldUseSsl(explicitHost);
+    return {
+      ...shared,
+      host: explicitHost,
+      port: Number(process.env.DB_PORT) || 3306,
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_NAME || 'ecomma',
+      ssl: useSsl ? getSslConfig() : undefined
+    };
+  }
+
   if (process.env.DATABASE_URL) {
     const url = new URL(process.env.DATABASE_URL);
     const host = url.hostname;
