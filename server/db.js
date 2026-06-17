@@ -16,9 +16,9 @@ function getSslConfig() {
 
 function shouldUseSsl(host) {
   if (process.env.DB_SSL === 'false') return false;
-  if (process.env.DB_SSL === 'true') return true;
   // Railway public TCP proxy does not support MySQL SSL upgrades
   if (host && host.endsWith('.rlwy.net')) return false;
+  if (process.env.DB_SSL === 'true') return true;
   return host !== '127.0.0.1' && host !== 'localhost';
 }
 

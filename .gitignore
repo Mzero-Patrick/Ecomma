@@ -1,6 +1,8 @@
 node_modules/
 server/node_modules/
 server/.env
+.env.vercel.local
 .DS_Store
 Thumbs.db
 *.log
+.vercel

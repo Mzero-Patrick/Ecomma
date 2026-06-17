@@ -2,7 +2,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
-const { pool } = require('./db');
+const { pool, isCloudDatabase } = require('./db');
 const { initDatabase } = require('./init-db');
 const { ensureAdminUser, ensureSampleProducts } = require('./seed');
 const authRoutes = require('./routes/auth');
@@ -59,6 +59,14 @@ function createApp() {
 
   app.get('/api/health', async (_req, res) => {
     try {
+      if (process.env.VERCEL && !process.env.DATABASE_URL && !isCloudDatabase()) {
+        return res.status(503).json({
+          ok: false,
+          service: 'ecomma-api',
+          database: 'disconnected',
+          error: 'DATABASE_URL is not configured on Vercel.'
+        });
+      }
       await withTimeout(pool.query('SELECT 1'), 'Health check');
       res.json({ ok: true, service: 'ecomma-api', database: 'connected' });
     } catch (err) {
