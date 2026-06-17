@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const { query } = require('../server/db');
-const { ensureAdminUser } = require('../server/seed');
-const { initDatabase } = require('../server/init-db');
+const { query } = require('../../server/db');
+const { ensureAdminUser } = require('../../server/seed');
+const { initDatabase } = require('../../server/init-db');
 
 let ready = null;
 
